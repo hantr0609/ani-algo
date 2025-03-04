@@ -9,11 +9,17 @@ export default function Navbar() {
           <option value="rr">Round Robin</option>
           <option value="mlfq">Multi-Level Feedback Queue</option>
         </select>
-      </div>
-      <div className="flex gap-4">
-        <button>Run</button>
-        <button>Step</button>
-        <button>Reset</button>
+        <div className="flex gap-4">
+          <button className="bg-indigo-500 text-white px-4 py-2 rounded-md">
+            Run Simulation
+          </button>
+          <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+            Step Forward
+          </button>
+          <button className="bg-red-500 text-white px-4 py-2 rounded-md">
+            Reset
+          </button>
+        </div>
       </div>
     </nav>
   );
