@@ -1,6 +1,8 @@
+import '../styles/globals.css';
+
 export default function Layout({ children }) {
   return (
-    <html>
+    <html lang="en">
       <body>{children}</body>
     </html>
   );
