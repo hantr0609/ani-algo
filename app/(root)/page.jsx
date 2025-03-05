@@ -1,5 +1,7 @@
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
+import ProcessManagement from '../components/ProcessManagement';
+import Visualization from '../components/Visualization';
 
 export default function Home() {
   return (
@@ -7,7 +9,8 @@ export default function Home() {
       <Header />
       <Navbar />
       <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        Hi
+        <ProcessManagement />
+        <Visualization />
       </main>
     </div>
   );
