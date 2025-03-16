@@ -12,7 +12,12 @@ import ProcessTimeline from './process/ProcessTimeline';
 import ProcessTable from './process/ProcessTable';
 import Graph from './Graph';
 
-export default function Visualization({ processes, algorithm, settings }) {
+export default function Visualization({
+  processes,
+  algorithm,
+  settings,
+  onResults,
+}) {
   const [result, setResult] = useState(null);
   const [allResults, setAllResults] = useState(null);
 
@@ -39,6 +44,7 @@ export default function Visualization({ processes, algorithm, settings }) {
         };
         setAllResults(results);
         setResult(null);
+        onResults(null, results);
       } else {
         // Calculate result for single algorithm
         let calculationResult;
@@ -67,6 +73,7 @@ export default function Visualization({ processes, algorithm, settings }) {
         }
         setResult(calculationResult);
         setAllResults(null);
+        onResults(calculationResult, null);
       }
     }
   }, [processes, algorithm, settings]);

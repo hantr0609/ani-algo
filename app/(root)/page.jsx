@@ -9,6 +9,8 @@ import Visualization from '../components/Visualization';
 export default function Home() {
   const [processes, setProcesses] = useState([]);
   const [algorithm, setAlgorithm] = useState('fifo');
+  const [result, setResult] = useState(null);
+  const [allResults, setAllResults] = useState(null);
   const [settings, setSettings] = useState({
     timeQuantum: 1,
     priorityLevels: 3,
@@ -17,14 +19,23 @@ export default function Home() {
 
   function handleProcessesGenerated(newProcesses) {
     setProcesses(newProcesses);
+    setResult(null);
+    setAllResults(null);
   }
 
   function handleAlgorithmChange(newAlgorithm) {
     setAlgorithm(newAlgorithm);
+    setResult(null);
+    setAllResults(null);
   }
 
   function handleSettingsChange(newSettings) {
     setSettings(newSettings);
+  }
+
+  function handleResults(newResult, newAllResults) {
+    setResult(newResult);
+    setAllResults(newAllResults);
   }
 
   return (
@@ -34,6 +45,9 @@ export default function Home() {
         onProcessesGenerated={handleProcessesGenerated}
         onAlgorithmChange={handleAlgorithmChange}
         settings={settings}
+        processes={processes}
+        result={result}
+        allResults={allResults}
       />
       <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         <ProcessManagement
@@ -44,6 +58,7 @@ export default function Home() {
           processes={processes}
           algorithm={algorithm}
           settings={settings}
+          onResults={handleResults}
         />
       </main>
     </div>

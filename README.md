@@ -2,7 +2,24 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/hantr0609/cpu-scheduling-visualization.git
+cd cpu-scheduling-visualization
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +31,43 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Algorithm Details
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### FIFO (First In First Out)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Processes are executed in the order they arrive
+- Non-preemptive scheduling
+- Simple implementation but may lead to convoy effect
 
-## Learn More
+### SJF (Shortest Job First)
 
-To learn more about Next.js, take a look at the following resources:
+- Selects process with shortest burst time
+- Non-preemptive scheduling
+- Optimal for minimizing average waiting time
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### STCF (Shortest Time to Completion First)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Preemptive version of SJF
+- Switches to shorter processes that arrive
+- Optimal for minimizing average response time
 
-## Deploy on Vercel
+### RR (Round Robin)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Time-sharing algorithm
+- Each process gets a fixed time quantum
+- Fair distribution of CPU time
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### MLFQ (Multi-Level Feedback Queue)
+
+- Multiple priority queues
+- Dynamic priority adjustment
+- Balances throughput and response time
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Inspired by Operating Systems course materials
+- Built for educational purposes
