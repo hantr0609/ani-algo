@@ -40,6 +40,7 @@ export default function Navbar({
           <option value="stcf">Shortest Time to Completion First (STCF)</option>
           <option value="rr">Round Robin (RR)</option>
           <option value="mlfq">Multi-Level Feedback Queue (MLFQ)</option>
+          <option value="all">Compare All Algorithms</option>
         </select>
         <button
           onClick={generateProcesses}
