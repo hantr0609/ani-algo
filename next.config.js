@@ -1,11 +1,9 @@
-/** @type {import('next').NextConfig} */
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
   output: 'export',
-  images: {
-    unoptimized: true,
-  },
-  basePath: '/ani-algo',
-  assetPrefix: '/ani-algo/',
+  distDir: 'dist',
 };
 
 module.exports = nextConfig;
