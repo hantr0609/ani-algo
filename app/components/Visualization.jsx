@@ -10,6 +10,7 @@ import { useMLFQ } from '../algorithm/useMLFQ';
 import MetricCard from './MetricCard';
 import ProcessTimeline from './process/ProcessTimeline';
 import ProcessTable from './process/ProcessTable';
+import Graph from './Graph';
 
 export default function Visualization({ processes, algorithm, settings }) {
   const [result, setResult] = useState(null);
@@ -90,6 +91,8 @@ export default function Visualization({ processes, algorithm, settings }) {
                     value={result.averageTurnaroundTime.toFixed(2)}
                   />
                 </div>
+
+                <Graph result={result} processes={processes} />
               </motion.div>
             )}
           </AnimatePresence>
