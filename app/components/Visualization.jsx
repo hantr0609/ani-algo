@@ -5,17 +5,20 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useFIFO } from '../algorithm/useFifo';
 import { useSJF } from '../algorithm/useSJF';
 import { useSTCF } from '../algorithm/useSTCF';
-
+import { useRR } from '../algorithm/useRR';
+import { useMLFQ } from '../algorithm/useMLFQ';
 import MetricCard from './MetricCard';
 import ProcessTimeline from './process/ProcessTimeline';
 import ProcessTable from './process/ProcessTable';
 
-export default function Visualization({ processes, algorithm }) {
+export default function Visualization({ processes, algorithm, settings }) {
   const [result, setResult] = useState(null);
 
   const { calculateFIFO } = useFIFO();
   const { calculateSJF } = useSJF();
   const { calculateSTCF } = useSTCF();
+  const { calculateRR } = useRR();
+  const { calculateMLFQ } = useMLFQ();
 
   useEffect(() => {
     if (processes.length > 0) {
@@ -31,13 +34,23 @@ export default function Visualization({ processes, algorithm }) {
         case 'stcf':
           calculationResult = calculateSTCF(processes);
           break;
+        case 'rr':
+          calculationResult = calculateRR(processes, settings.timeQuantum);
+          break;
+        case 'mlfq':
+          calculationResult = calculateMLFQ(
+            processes,
+            settings.timeQuantum,
+            settings.priorityLevels
+          );
+          break;
         default:
           calculationResult = calculateFIFO(processes);
       }
 
       setResult(calculationResult);
     }
-  }, [processes, algorithm]);
+  }, [processes, algorithm, settings]);
 
   const maxTime =
     result?.timeline.reduce((max, block) => Math.max(max, block.endTime), 0) ||

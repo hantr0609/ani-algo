@@ -27,9 +27,7 @@ export default function ProcessTimeline({ timeline, maxTime, result }) {
 
   return (
     <div className="space-y-4">
-      {/* Process Timeline */}
       <div className="relative h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
-        {/* Grid lines */}
         <div className="absolute inset-0 w-full h-full">
           {Array.from({ length: maxTime + 1 }, (_, i) => (
             <div
@@ -40,7 +38,6 @@ export default function ProcessTimeline({ timeline, maxTime, result }) {
           ))}
         </div>
 
-        {/* Process blocks */}
         {timeline.map((block, index) => {
           const widthPercentage =
             ((block.endTime - block.startTime) * 100) / maxTime;
@@ -66,7 +63,6 @@ export default function ProcessTimeline({ timeline, maxTime, result }) {
                 {block.processId === 'idle' ? 'Idle' : `P${block.processId}`}
               </span>
 
-              {/* Tooltip */}
               {hoveredBlock === block && (
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-10">
                   <div className="bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
@@ -90,7 +86,6 @@ export default function ProcessTimeline({ timeline, maxTime, result }) {
           );
         })}
 
-        {/* Time markers */}
         <div className="absolute bottom-0 w-full flex text-xs text-gray-500 dark:text-gray-400">
           {Array.from({ length: maxTime + 1 }, (_, i) => (
             <div
@@ -107,7 +102,6 @@ export default function ProcessTimeline({ timeline, maxTime, result }) {
         </div>
       </div>
 
-      {/* Process Information Table */}
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>

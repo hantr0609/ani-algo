@@ -1,36 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useFIFO } from '../algorithm/useFifo';
-import { useSJF } from '../algorithm/useSJF';
-import { useSTCF } from '../algorithm/useSTCF';
 
-const generateRandomProcesses = (count) => {
-  return Array.from({ length: count }, (_, index) => ({
-    id: index + 1,
-    arrivalTime: Math.floor(Math.random() * 10),
-    burstTime: Math.floor(Math.random() * 8) + 1,
-  }));
-};
-
-export default function Navbar({ onProcessesGenerated, onAlgorithmChange }) {
-  const [processes, setProcesses] = useState([]);
+export default function Navbar({
+  onProcessesGenerated,
+  onAlgorithmChange,
+  settings,
+}) {
   const [algorithm, setAlgorithm] = useState('fifo');
-  const [result, setResult] = useState(null);
-
-  const { calculateFIFO } = useFIFO();
-  const { calculateSJF } = useSJF();
-  const { calculateSTCF } = useSTCF();
 
   function generateProcesses() {
-    const newProcesses = generateRandomProcesses(5);
-    setProcesses(newProcesses);
+    const newProcesses = Array.from(
+      { length: settings.numProcesses },
+      (_, index) => ({
+        id: index + 1,
+        arrivalTime: Math.floor(Math.random() * 10),
+        burstTime: Math.floor(Math.random() * 8) + 1,
+      })
+    );
     onProcessesGenerated(newProcesses);
   }
-
-  const maxTime =
-    result?.timeline.reduce((max, block) => Math.max(max, block.endTime), 0) ||
-    0;
 
   const handleAlgorithmChange = (e) => {
     const newAlgorithm = e.target.value;
@@ -49,6 +38,8 @@ export default function Navbar({ onProcessesGenerated, onAlgorithmChange }) {
           <option value="fifo">First In First Out (FIFO)</option>
           <option value="sjf">Shortest Job First (SJF)</option>
           <option value="stcf">Shortest Time to Completion First (STCF)</option>
+          <option value="rr">Round Robin (RR)</option>
+          <option value="mlfq">Multi-Level Feedback Queue (MLFQ)</option>
         </select>
         <button
           onClick={generateProcesses}
