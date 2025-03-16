@@ -12,8 +12,8 @@ export const useSTCF = () => {
     };
 
     let currentTime = 0;
-    const unfinishedProcesses = [...processes];
-    const completedProcesses = [];
+    let unfinishedProcesses = [...processes];
+    let completedProcesses = [];
 
     while (unfinishedProcesses.length > 0) {
       // Find available processes at current time

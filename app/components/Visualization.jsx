@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useFIFO } from '../algorithm/useFifo';
 import { useSJF } from '../algorithm/useSJF';
+import { useSTCF } from '../algorithm/useSTCF';
+
 import MetricCard from './MetricCard';
+import ProcessTimeline from './ProcessTimeline';
 
 const generateRandomProcesses = (count) => {
   return Array.from({ length: count }, (_, index) => ({
@@ -12,60 +15,6 @@ const generateRandomProcesses = (count) => {
     arrivalTime: Math.floor(Math.random() * 10),
     burstTime: Math.floor(Math.random() * 8) + 1,
   }));
-};
-
-const ProcessTimeline = ({ timeline, maxTime }) => {
-  return (
-    <div className="relative h-16 bg-gray-100 dark:bg-gray-700 rounded-lg mt-4 overflow-hidden">
-      {/* Grid lines */}
-      <div className="absolute inset-0 w-full h-full">
-        {Array.from({ length: 10 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute h-full w-px bg-gray-200 dark:bg-gray-600"
-            style={{ left: `${(i + 1) * 10}%` }}
-          />
-        ))}
-      </div>
-
-      {timeline.map((block, index) => {
-        const widthPercentage =
-          ((block.endTime - block.startTime) * 100) / maxTime;
-        const leftPosition = (block.startTime * 100) / maxTime;
-
-        return (
-          <motion.div
-            key={`${block.processId}-${index}`}
-            initial={{ width: 0, left: `${leftPosition}%` }}
-            animate={{
-              width: `${widthPercentage}%`,
-              left: `${leftPosition}%`,
-            }}
-            transition={{ duration: 0.5 }}
-            style={{ position: 'absolute', height: '100%' }}
-            className={`${
-              block.processId === 'idle'
-                ? 'bg-gray-300 dark:bg-gray-600'
-                : 'bg-blue-500 dark:bg-blue-600'
-            } border-l border-r border-white dark:border-gray-50`}
-          >
-            <span className="absolute inset-0 flex items-center justify-center text-xs text-white font-medium">
-              {block.processId === 'idle' ? 'Idle' : `P${block.processId}`}
-            </span>
-          </motion.div>
-        );
-      })}
-
-      {/* Time markers */}
-      <div className="absolute bottom-0 w-full h-6 flex justify-between text-xs text-gray-500 dark:text-gray-400">
-        {Array.from({ length: 6 }, (_, i) => (
-          <span key={i} className="relative" style={{ left: `${i * 20}%` }}>
-            {Math.floor((i * maxTime) / 5)}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
 };
 
 const ProcessTable = ({ processes }) => {
@@ -105,6 +54,7 @@ export default function Visualization() {
 
   const { calculateFIFO } = useFIFO();
   const { calculateSJF } = useSJF();
+  const { calculateSTCF } = useSTCF();
 
   const generateProcesses = () => {
     const newProcesses = generateRandomProcesses(5);
@@ -113,10 +63,22 @@ export default function Visualization() {
 
   useEffect(() => {
     if (processes.length > 0) {
-      const calculationResult =
-        algorithm === 'fifo'
-          ? calculateFIFO(processes)
-          : calculateSJF(processes);
+      let calculationResult;
+
+      switch (algorithm) {
+        case 'fifo':
+          calculationResult = calculateFIFO(processes);
+          break;
+        case 'sjf':
+          calculationResult = calculateSJF(processes);
+          break;
+        case 'stcf':
+          calculationResult = calculateSTCF(processes);
+          break;
+        default:
+          calculationResult = calculateFIFO(processes);
+      }
+
       setResult(calculationResult);
     }
   }, [processes, algorithm]);
@@ -135,8 +97,11 @@ export default function Visualization() {
             onChange={(e) => setAlgorithm(e.target.value)}
             className="px-3 py-1 border rounded-md dark:bg-gray-700 dark:border-gray-600"
           >
-            <option value="fifo">FIFO</option>
-            <option value="sjf">SJF</option>
+            <option value="fifo">First In First Out (FIFO)</option>
+            <option value="sjf">Shortest Job First (SJF)</option>
+            <option value="stcf">
+              Shortest Time to Completion First (STCF)
+            </option>
           </select>
           <button
             onClick={generateProcesses}
@@ -159,7 +124,11 @@ export default function Visualization() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <ProcessTimeline timeline={result.timeline} maxTime={maxTime} />
+                <ProcessTimeline
+                  timeline={result.timeline}
+                  maxTime={maxTime}
+                  result={result}
+                />
 
                 <div className="flex gap-4 mt-4">
                   <MetricCard

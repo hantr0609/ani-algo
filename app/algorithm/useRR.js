@@ -12,8 +12,8 @@ export const useRR = () => {
     };
 
     let currentTime = 0;
-    const unfinishedProcesses = [...processes];
-    const completedProcesses = [];
+    let unfinishedProcesses = [...processes];
+    let completedProcesses = [];
 
     while (unfinishedProcesses.length > 0) {
       // Find processes that have arrived and are ready to run
